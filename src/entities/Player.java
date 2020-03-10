@@ -13,6 +13,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 
 /**
@@ -24,7 +25,7 @@ public class Player implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     public Long getId() {
@@ -35,10 +36,9 @@ public class Player implements Serializable {
         this.id = id;
     }
 
-
-    @OneToMany(mappedBy = "player", cascade = CascadeType.PERSIST)
+    @ManyToMany(mappedBy = "player", cascade = CascadeType.PERSIST)
     private Collection<Videogame> videogames;
-    
+
     public Collection<Videogame> getVideogames() {
         return videogames;
     }
@@ -46,9 +46,9 @@ public class Player implements Serializable {
     public void setVideogames(Collection<Videogame> achievements) {
         this.videogames = achievements;
     }
+
     
-    
-     @Column(nullable = false, name = "name", length = 500)
+    @Column(nullable = false, name = "player", length = 500)
     private String name;
 
     public String getName() {
@@ -58,8 +58,13 @@ public class Player implements Serializable {
     public void setName(String name) {
         this.name = name;
     }
-
-
+    
+      public void addVideogame(Videogame a) {
+        a.setPlayer(this);
+        this.videogames.add(a);
+    }
+    
+    
     @Override
     public int hashCode() {
         int hash = 0;
@@ -79,6 +84,8 @@ public class Player implements Serializable {
         }
         return true;
     }
+    
+    
 
     @Override
     public String toString() {

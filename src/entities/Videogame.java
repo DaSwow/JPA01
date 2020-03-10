@@ -15,7 +15,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 
 /**
@@ -44,7 +44,7 @@ public class Videogame implements Serializable {
         this.achievements = achievements;
     }
 
-    @ManyToOne(cascade = CascadeType.PERSIST)
+    @ManyToMany(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "player_id", nullable = false)
     private Player player;
 
@@ -55,8 +55,7 @@ public class Videogame implements Serializable {
     public void setPlayer(Player player) {
         this.player = player;
     }
-    
-    
+
     public int getRating() {
         return rating;
     }
@@ -87,7 +86,7 @@ public class Videogame implements Serializable {
     public Videogame() {
         this.achievements = new HashSet();
     }
-    
+
     public void addAchievement(Achievement a) {
         a.setVideogame(this);
         this.achievements.add(a);
