@@ -44,7 +44,7 @@ public class Achievement implements Serializable {
         this.name = name;
     }
 
-     @ManyToOne(cascade = CascadeType.PERSIST)
+    @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "videogame_id", nullable = false)
     private Videogame videogame;
 

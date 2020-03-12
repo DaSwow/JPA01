@@ -6,6 +6,7 @@
 package entities;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import javax.persistence.CascadeType;
@@ -17,17 +18,21 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
+import javax.persistence.Table;
 
 /**
  *
  * @author lv1013
  */
 @Entity
-public class Videogame implements Serializable {
+@Table(name = "videogame")
+public class Videogame extends EntityBase implements Serializable {
 
     private static final long serialVersionUID = 1L;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(nullable = false, name = "videogame_id")
     private Integer id;
 
     @Column(nullable = false)
@@ -44,18 +49,30 @@ public class Videogame implements Serializable {
         this.achievements = achievements;
     }
 
-    @ManyToMany(cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "player_id", nullable = false)
-    private Player player;
+    @ManyToMany
+    private Collection<Player> players;
 
-    public Player getPlayer() {
-        return player;
+    public Collection<Player> getPlayers() {
+        return players;
+    }
+    
+    public void setPlayers(Collection<Player> player) {
+        this.players = player;
     }
 
-    public void setPlayer(Player player) {
-        this.player = player;
+    public void addPlayer(Player player) {
+        if (this.players == null) {
+            this.players = new ArrayList<>();
+           
+        }
+
+        this.players.add(player);
     }
 
+    
+    
+    
+    
     public int getRating() {
         return rating;
     }
@@ -72,7 +89,7 @@ public class Videogame implements Serializable {
         this.id = id;
     }
 
-    @Column(nullable = false)
+    @Column(name = "name", nullable = false)
     private String name;
 
     public String getName() {

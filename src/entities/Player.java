@@ -7,25 +7,28 @@ package entities;
 
 import java.io.Serializable;
 import java.util.Collection;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
-import javax.persistence.OneToMany;
+import javax.persistence.Table;
 
 /**
  *
  * @author carls
  */
 @Entity
+@Table(name ="player")
 public class Player implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name="player_id")
     private Long id;
 
     public Long getId() {
@@ -36,7 +39,7 @@ public class Player implements Serializable {
         this.id = id;
     }
 
-    @ManyToMany(mappedBy = "player", cascade = CascadeType.PERSIST)
+    @ManyToMany
     private Collection<Videogame> videogames;
 
     public Collection<Videogame> getVideogames() {
@@ -47,8 +50,7 @@ public class Player implements Serializable {
         this.videogames = achievements;
     }
 
-    
-    @Column(nullable = false, name = "player", length = 500)
+    @Column(nullable = false, name = "name", length = 500)
     private String name;
 
     public String getName() {
@@ -58,13 +60,8 @@ public class Player implements Serializable {
     public void setName(String name) {
         this.name = name;
     }
-    
-      public void addVideogame(Videogame a) {
-        a.setPlayer(this);
-        this.videogames.add(a);
-    }
-    
-    
+
+
     @Override
     public int hashCode() {
         int hash = 0;
@@ -84,8 +81,6 @@ public class Player implements Serializable {
         }
         return true;
     }
-    
-    
 
     @Override
     public String toString() {
